@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 import streamlit as st
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Nombre en la pestaña
 st.set_page_config(layout='centered',
@@ -30,4 +32,15 @@ with steps[0]:
     m2.metric(label= 'Métrica 2', value=np.mean(id1['Clics']),
         delta=str(np.mean(id1['Impresiones']))+' promedios',
                delta_color='inverse')
-    
+    with steps[1]:
+        df=pd.read_csv("https://raw.githubusercontent.com/diplomado-bigdata-machinelearning-udea/Curso1/master/s03/dataVentas2009.csv")
+        df.Fecha=pd.to_datetime(df.Fecha, format='%d/%m/%Y')
+        df.set_index('Fecha', inplace=True)
+       # st.table(df)
+        varx=st.selectbox('Escoge la variable x', df.columns)
+        #vary=st.selectbox('Escoge la variable y',met_df['Clic'])
+        fig, ax = plt.subplots()
+        ax =sns.histplot(data=df, x=varx)
+        #ax.set_xlim(-10,1000)
+        #ax.set_ylim(0,20)
+        st.pyplot(fig)
